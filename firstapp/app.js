@@ -8,6 +8,7 @@ const pw_auth_router = require('./routes/pwauth')
 const toDoRouter = require('./routes/todo');
 const transactionRouter = require('./routes/transaction');   // this is tracnasyion route
 const weatherRouter = require('./routes/weather');
+const gptRouter = require('./routes/gpt');
 
 const User = require('./models/User');
 
@@ -107,16 +108,10 @@ app.get('/about',
   }
 )
 
-// app.get('/transactionlist',
-//   isLoggedIn,
-//   (req, res, next) => {
-//     res.render('transaction');
-//   }
-// )
-
 app.use(toDoRouter);
 app.use(transactionRouter);
 app.use(weatherRouter);
+app.use(gptRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

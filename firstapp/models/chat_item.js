@@ -12,4 +12,4 @@ var gptSchema = Schema({
   userId: { type: ObjectId, ref: 'user' }
 });
 
-module.exports = mongoose.model('chatgptItem', gptSchema);
+module.exports = mongoose.model('chat_item', gptSchema);

@@ -3,7 +3,7 @@
 */
 const express = require('express');
 const router = express.Router();
-const gpt_Item = require('../models/gpt')
+const gpt_Item = require('../models/chat_item')
 const User = require('../models/User')
 
 
