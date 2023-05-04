@@ -8,44 +8,56 @@
   <div class="col">
 
     <p>Here is a list of question you asked</p>
+
+
+    <!-- 
+    <form method="post" action="/gpt">
+      New Question: <input type="text" name="question">
+      <br>
+
+      <input type="submit" value="submit">
+    </form> -->
+
+
+
     <ul class="list-group">
       <% items.forEach(item=> { %>
-        <li class="list-group-item">
-          <span class="">
-            <% if (item.completed) { %>
-              <a href="/todo/uncomplete/<%= item._id %>">
-                <i class="bi bi-check-circle-fill"></i>
-              </a>
-              <% } else {%>
-                <a href="/todo/complete/<%= item._id %>">
-                  <i class="bi bi-check-circle"></i>
-                </a>
-                <%} %>
-                  <a href="/todo/remove/<%=item._id %>">
-                    <i class="bi bi-trash"></i>
-                  </a>
-          </span>
+
+
+
+
+        <%= item.question %>
+          <%= item.answer %>
+
+
+            <a href="/gpt/remove/<%=item._id %>">
+              <i class="bi bi-trash"></i>
+            </a>
+
+            <!-- </span>
           <span class="mx-5">
-            <%= item.item %>
-          </span>
-          <span class="badge rounded-pill bg-danger">
+          </span> -->
+
+
+
+            <!-- <span class="badge rounded-pill bg-danger">
             <%= item.priority?item.priority:5 %>
-          </span>
-          <a href="/todo/edit/<%=item._id %>">
+          </span> -->
+            <!-- <a href="/gpt/edit/<%=item._id %>">
             <i class="bi bi-pencil-square"></i>
-          </a>
+          </a> -->
 
-        </li>
-        <br>
-
-        <% }) %>
-
-          <form method="post" action="todo">
-            New Question: <input type="text" name="item">
+            </li>
             <br>
 
-            <input type="submit" value="Submit">
-          </form>
+            <% }) %>
+
+              <form method="post" action="/gpt">
+                New Question: <input type="text" name="question">
+                <br>
+
+                <input type="submit" value="submit">
+              </form>
   </div>
 </div>
 </div>

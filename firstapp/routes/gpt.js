@@ -5,8 +5,11 @@ const express = require('express');
 const router = express.Router();
 const gpt_Item = require('../models/chat_item')
 const User = require('../models/User')
-
-
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 /*
 this is a very simple server which maintains a key/value
 store using an object where the keys and values are lists of strings
@@ -47,25 +50,36 @@ router.get('/gpt/',
 router.post('/gpt',
   isLoggedIn,
   async (req, res, next) => {
-    const todo = new gpt_Item(
+    const completion = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: req.body.question,
+    });
+    const newQuestion = new gpt_Item(
       {
-        item: req.body.item,
-        createdAt: new Date(),
-        completed: false,
-        priority: parseInt(req.body.priority),
+        question: req.body.question,
+        answer: completion.data.choices[0].text,
         userId: req.user._id
       })
-    await todo.save();
+    await newQuestion.save();
     res.redirect('/gpt')
   });
 
-// router.get('/todo/remove/:itemId',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     console.log("inside /todo/remove/:itemId")
-//     await gpt_Item.deleteOne({ _id: req.params.itemId });
-//     res.redirect('/toDo')
-//   });
+
+
+router.get('/gpt/remove/:itemId',
+  isLoggedIn,
+  async (req, res, next) => {
+    console.log("inside /todo/remove/:itemId")
+    await gpt_Item.deleteOne({ _id: req.params.itemId });
+    res.redirect('/gpt')
+  });
+
+
+
+// console.log(completion.data.choices[0].text);
+
+
+
 
 // router.get('/todo/complete/:itemId',
 //   isLoggedIn,

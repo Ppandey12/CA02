@@ -108,10 +108,37 @@ app.get('/about',
   }
 )
 
+app.get('/chatgpt_Home',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('chatgpt_Home');
+  }
+)
+
+app.get('/chatgpt_About',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('chatgpt_About');
+  }
+)
+
+app.get('/chatgpt_Team',
+  isLoggedIn,
+  (req, res, next) => {
+    res.render('chatgpt_Team');
+  }
+)
+
+
+
+
+
 app.use(toDoRouter);
 app.use(transactionRouter);
 app.use(weatherRouter);
 app.use(gptRouter)
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

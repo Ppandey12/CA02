@@ -5,10 +5,11 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 var gptSchema = Schema({
-  item: String,
-  completed: Boolean,
-  createdAt: Date,
-  priority: Number,
+  question: String,
+  answer: String,
+  // completed: Boolean,
+  // createdAt: Date,
+  // priority: Number,
   userId: { type: ObjectId, ref: 'user' }
 });
 
