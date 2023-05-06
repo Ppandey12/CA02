@@ -10,6 +10,9 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
+
+const axios = require('axios')
 /*
 this is a very simple server which maintains a key/value
 store using an object where the keys and values are lists of strings
@@ -66,6 +69,15 @@ router.post('/gpt',
 
 
 
+// app.post('/chatgpt_copy',
+//   async (req, res, next) => {
+//     response =
+//       await axios.post('http://gracehopper.cs-i.brandeis.edu:3500/openai',
+//         { prompt: "how does the flu differ from covid?" })
+//     res.json(response.data)
+//   })
+
+
 router.get('/gpt/remove/:itemId',
   isLoggedIn,
   async (req, res, next) => {
@@ -73,10 +85,6 @@ router.get('/gpt/remove/:itemId',
     await gpt_Item.deleteOne({ _id: req.params.itemId });
     res.redirect('/gpt')
   });
-
-
-
-// console.log(completion.data.choices[0].text);
 
 
 

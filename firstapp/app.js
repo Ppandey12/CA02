@@ -129,6 +129,24 @@ app.get('/chatgpt_Team',
   }
 )
 
+// app.get('/chatgpt_copy',
+//   isLoggedIn,
+//   (req, res, next) => {
+//     res.render('chatgpt_copy');
+//   }
+// )
+
+
+const axios = require('axios')
+app.get('/chatgpt_copy',
+  async (req, res, next) => {
+    response =
+      await axios.post('http://gracehopper.cs-i.brandeis.edu:3500/openai',
+        { prompt: "who was the first president of the united states" })
+    res.json(response.data)
+  })
+
+
 
 
 
