@@ -5,19 +5,9 @@ const express = require('express');
 const router = express.Router();
 const gpt_Item = require('../models/chat_item')
 const User = require('../models/User')
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 
+const axios = require('axios');
 
-const axios = require('axios')
-/*
-this is a very simple server which maintains a key/value
-store using an object where the keys and values are lists of strings
-
-*/
 
 isLoggedIn = (req, res, next) => {
   if (res.locals.loggedIn) {
@@ -53,14 +43,15 @@ router.get('/gpt/',
 router.post('/gpt',
   isLoggedIn,
   async (req, res, next) => {
-    const completion = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: req.body.question,
-    });
+
+    response =
+      await axios.post('http://gracehopper.cs-i.brandeis.edu:3500/openai',
+        { prompt: req.body.question })
+
     const newQuestion = new gpt_Item(
       {
         question: req.body.question,
-        answer: completion.data.choices[0].text,
+        answer: response.data.choices[0].message.content,
         userId: req.user._id
       })
     await newQuestion.save();
@@ -68,14 +59,6 @@ router.post('/gpt',
   });
 
 
-
-// app.post('/chatgpt_copy',
-//   async (req, res, next) => {
-//     response =
-//       await axios.post('http://gracehopper.cs-i.brandeis.edu:3500/openai',
-//         { prompt: "how does the flu differ from covid?" })
-//     res.json(response.data)
-//   })
 
 
 router.get('/gpt/remove/:itemId',
@@ -89,75 +72,7 @@ router.get('/gpt/remove/:itemId',
 
 
 
-// router.get('/todo/complete/:itemId',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     console.log("inside /todo/complete/:itemId")
-//     await gpt_Item.findOneAndUpdate(
-//       { _id: req.params.itemId },
-//       { $set: { completed: true } });
-//     res.redirect('/toDo')
-//   });
-
-// router.get('/todo/uncomplete/:itemId',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     console.log("inside /todo/complete/:itemId")
-//     await gpt_Item.findOneAndUpdate(
-//       { _id: req.params.itemId },
-//       { $set: { completed: false } });
-//     res.redirect('/toDo')
-//   });
-
-// router.get('/todo/edit/:itemId',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     console.log("inside /todo/edit/:itemId")
-//     const item =
-//       await gpt_Item.findById(req.params.itemId);
-//     //res.render('edit', { item });
-//     res.locals.item = item
-//     res.render('edit')
-//     //res.json(item)
-//   });
-
-// router.post('/todo/updateTodoItem',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     const { itemId, item, priority } = req.body;
-//     console.log("inside /todo/complete/:itemId");
-//     await gpt_Item.findOneAndUpdate(
-//       { _id: itemId },
-//       { $set: { item, priority } });
-//     res.redirect('/toDo')
-//   });
-
-// router.get('/todo/byUser',
-//   isLoggedIn,
-//   async (req, res, next) => {
-//     let results =
-//       await gpt_Item.aggregate(
-//         [
-//           {
-//             $group: {
-//               _id: '$userId',
-//               total: { $count: {} }
-//             }
-//           },
-//           { $sort: { total: -1 } },
-//         ])
-
-//     results =
-//       await User.populate(results,
-//         {
-//           path: '_id',
-//           select: ['username', 'age']
-//         })
-
-//     //res.json(results)
-//     res.render('summarizeByUser', { results })
-//   });
-
-
-
 module.exports = router;
+
+
+
